@@ -775,14 +775,14 @@ class MenuItem implements ItemInterface
      */
     public function getCurrentItem()
     {
-        if ($this->isCurrent()) {
-            return $this;
-        }
-
         foreach ($this->children as $child) {
             if ($current = $child->getCurrentItem()) {
                 return $current;
             }
+        }
+
+        if ($this->isCurrent()) {
+            return $this;
         }
 
         return null;
@@ -974,6 +974,7 @@ class MenuItem implements ItemInterface
     public function setCurrentUri($uri)
     {
         $this->currentUri = $uri;
+        $this->isCurrent = null;
 
         foreach ($this->getChildren() as $child) {
             $child->setCurrentUri($uri);
